@@ -1,10 +1,9 @@
 /** Memory Size of Gameboy Max 64kb */
-export const MEMORY = new Uint8Array(65536)
+export const MEMORY = new Uint16Array(65536)
 
 /** CPU interrupts */
-
-/** Register OPCODE of Gameboy */
-export const REGISTERS: Object = {
+/** Register OPCODE of Gameboy CPU */
+export const REGISTERS = {
   a: 0, // 8bit
   b: 0,
   c: 0,
@@ -19,14 +18,14 @@ export const REGISTERS: Object = {
 
 // BIOS size of gameboy have 256 byte or 0x100
 const BIOS_SIZE = new ArrayBuffer(256)
-export const BIOS: Uint8Array = new Uint8Array(BIOS_SIZE)
+export const BIOS: Uint16Array = new Uint16Array(BIOS_SIZE)
 
-export const START_ADDRESS = new Uint8Array(0x100)
+// Complete memory address at 0x100000 or 65536
+// Starting of RAM Address
+export const COMPLETE_MEMORY_ADDR = new Uint16Array(0x10000)
 
-// Complete memory address at 0x100000
-export const COMPLETE_MEMORY_ADDR = new Uint8Array(0x10000)
-
-export const BIOS_DATA = [
+// BIOS DATA - this is will load nintendo logo
+export const BIOS_GB = [
   0x31,
   0xfe,
   0xff,
@@ -284,3 +283,27 @@ export const BIOS_DATA = [
   0xe0,
   0x50,
 ]
+
+export const MATCH_MEMORY_ADDRESS = {
+  ROM_HEADER_START: 0x100, // address of rom catridge header
+  ROM_HEADER_END: 0x14f, // information about catridge
+  ROM_BANK_START: 0x4000, // address of rom bank n catridge
+  ROM_BANK_END: 0x7fff, // this the game data address
+  VRAM_START: 0x8000, //address of graphics inlcuding character ram, BG map data 1, BG map data 2
+  VRAM_END: 0x9fff,
+  EXRAM_START: 0xa000, // external ram of catridge
+  EXRAM_END: 0xbfff,
+  OAM_START: 0xfe00, // Object Attribute Memory
+  OAM_END: 0xfe9f, // this is the Sprite RAM, max 40 Sprite
+  DEVICE_START: 0xff00, // Hardware I/O
+  DEVICE_END: 0xff7f,
+}
+
+/** Reference in 2.13.1. I/O RegistersGame BoyTM CPU Manual */
+export const CPU_INTERRUPTS = {
+  VBLANK: 0x0040,
+  LCDSTATUS: 0x0048,
+  TIMER_OVERFLOW: 0x0050,
+  SERIAL_TRANSFER: 0x0058,
+  HILO: 0x0060,
+}
