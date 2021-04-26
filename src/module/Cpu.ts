@@ -1,17 +1,20 @@
 import { COMPLETE_MEMORY_ADDR, CPU_INTERRUPTS } from '../constant/Constants'
 import Registers from './Registers'
 import MemoryManagementUnit from './MemoryManagementUnit'
+import Opcodes from './Opcodes'
 
 export default class CPU {
   mmu: MemoryManagementUnit
   isPause: boolean = false
   startAddress = COMPLETE_MEMORY_ADDR
   registers: Registers
+  opcodes: Opcodes
   constructor(mmu: MemoryManagementUnit) {
     this.mmu = mmu
     this.isPause = false
     this.startAddress = COMPLETE_MEMORY_ADDR
     this.registers = new Registers()
+    this.opcodes = new Opcodes()
   }
 
   /** handle interrupt CPU */
@@ -67,19 +70,39 @@ export default class CPU {
     // next instruction in PC
     // read the byte
     // get the opcode
-    pc = pc + 1
-    let opcode = this.mmu.readByte(pc)
+    let opcode = this.mmu.readByte(pc++)
+    let cmd = null
 
-    if (opcode == 0xcb) {
+    if (opcode === 0xcb) {
       opcode = this.mmu.readByte(pc++)
+      console.log('get command ext', this.opcodes.get(opcode), opcode)
       //cmd = Opcodes.EXT_COMMANDS.get(opcode);
     } else {
-      //cmd = Opcodes.COMMANDS.get(opcode);
+      cmd = this.opcodes.get(opcode)
+      console.log('get command', cmd, opcode)
     }
 
-    this.registers.setPC(pc)
+    if (!cmd) {
+      console.warn(`Invalid instruction ${opcode} @ ${pc}`)
+      return 0
+    }
 
-    console.log(`opcode ${opcode} PC : ${pc}`)
+    const args = new Array(cmd.args)
+    for (let i = 0; i < args.length; i++) {
+      args[i] = this.mmu.readByte(pc++)
+    }
+    console.log(args, 'args')
+
+    this.registers.setPC(pc)
+    cmd.commandOperation(this.registers, this.mmu, args)
+
+    console.log(
+      `opcode ${opcode} PC : ${pc} Register: ${JSON.stringify(
+        this.registers.getRegister(),
+      )}`,
+    )
+
+    return cmd.cycles
   }
 
   reset(): void {

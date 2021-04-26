@@ -16,6 +16,14 @@ export const REGISTERS = {
   pc: 0, // 16bit
 }
 
+/** CPU Flag Register values */
+export const FLAG_REGISTERS = {
+  z: 7,
+  n: 6,
+  h: 5,
+  c: 4,
+}
+
 // BIOS size of gameboy have 256 byte or 0x100
 const BIOS_SIZE = new ArrayBuffer(256)
 export const BIOS: Uint16Array = new Uint16Array(BIOS_SIZE)
@@ -284,6 +292,8 @@ export const BIOS_GB = [
   0x50,
 ]
 
+/** List Memory Address of Gameboy */
+
 export const MATCH_MEMORY_ADDRESS = {
   ROM_HEADER_START: 0x100, // address of rom catridge header
   ROM_HEADER_END: 0x14f, // information about catridge
@@ -293,7 +303,7 @@ export const MATCH_MEMORY_ADDRESS = {
   VRAM_END: 0x9fff,
   EXRAM_START: 0xa000, // external ram of catridge
   EXRAM_END: 0xbfff,
-  OAM_START: 0xfe00, // Object Attribute Memory
+  OAM_START: 0xfe00, // Object Attribute Memory (Sprite)
   OAM_END: 0xfe9f, // this is the Sprite RAM, max 40 Sprite
   DEVICE_START: 0xff00, // Hardware I/O
   DEVICE_END: 0xff7f,

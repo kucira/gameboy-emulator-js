@@ -1,16 +1,18 @@
 export default class Instructions {
-  address: any
-  label: string
-  cycles: any
   opcode: any
+  cycles: any
+  args: any
+  label: string
   commandOperation: Function
   constructor(
     opcode: any,
     cycles: any,
+    args: any,
     label: string,
     commandOperation: Function,
   ) {
     this.opcode = opcode
+    this.args = args
     this.cycles = cycles
     this.label = label
     this.commandOperation = commandOperation
