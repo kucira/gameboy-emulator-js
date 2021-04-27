@@ -8,6 +8,7 @@ Hope this project will finish and will gain a knowledge about emulator and hardw
 
 To understand emulate gameboy first need to do is understand the hardware
 https://www.chibiakumas.com/z80/Gameboy.php
+http://marc.rawer.de/Gameboy/Docs/GBCPUman.pdf
 
 To emulate the order should be
     1. Memory Management Unit

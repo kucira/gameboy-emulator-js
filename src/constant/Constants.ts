@@ -14,14 +14,13 @@ export const REGISTERS = {
   f: 0,
   sp: 0, // 16bit
   pc: 0, // 16bit
-}
-
-/** CPU Flag Register values */
-export const FLAG_REGISTERS = {
-  z: 7,
-  n: 6,
-  h: 5,
-  c: 4,
+  // Flags CPU
+  flags: {
+    z: 0,
+    n: 0,
+    h: 0,
+    c: 0,
+  },
 }
 
 // BIOS size of gameboy have 256 byte or 0x100

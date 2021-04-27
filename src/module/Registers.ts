@@ -4,6 +4,14 @@ import BitUtils from '../lib/BitUtils'
 export default class Registers {
   registers: any
   isIME: boolean = false
+  static Z_POS = 7
+
+  static N_POS = 6
+
+  static H_POS = 5
+
+  static C_POS = 4
+
   constructor() {
     this.registers = REGISTERS
     this.isIME = true
@@ -15,6 +23,50 @@ export default class Registers {
 
   getPC(): any {
     return this.registers.pc
+  }
+
+  getFlags(): any {
+    return this.registers.flags
+  }
+
+  getA(): any {
+    return this.registers.a
+  }
+
+  getB(): any {
+    return this.registers.b
+  }
+
+  getC(): any {
+    return this.registers.c
+  }
+
+  getD(): any {
+    return this.registers.d
+  }
+
+  getE(): any {
+    return this.registers.e
+  }
+
+  getH(): any {
+    return this.registers.h
+  }
+
+  getL(): any {
+    return this.registers.l
+  }
+
+  getHL(): any {
+    return (this.registers.h << 8) | this.registers.l
+  }
+
+  getSP(): any {
+    return this.registers.sp
+  }
+
+  setA(value: any): void {
+    this.registers.a = value
   }
 
   setB(value: any): void {
@@ -59,7 +111,38 @@ export default class Registers {
     this.registers.sp = sp
   }
 
+  addToPC(signedByte: any): void {
+    // checkByteArgument("signedByte", signedByte);
+    if (BitUtils.isNegative(signedByte)) {
+      this.registers.pc =
+        (this.registers.pc - BitUtils.abs(signedByte)) & 0xffff
+    } else {
+      this.registers.pc =
+        (this.registers.pc + BitUtils.abs(signedByte)) & 0xffff
+    }
+  }
+
+  decrementHL(): void {
+    const oldHL = this.getHL()
+    this.setHL((oldHL - 1) % 0xffff)
+    return oldHL
+  }
+
+  incrementHL(): void {
+    const oldHL = this.getHL()
+    this.setHL((oldHL + 1) % 0xffff)
+    return oldHL
+  }
+
   reset(): void {
     this.registers = REGISTERS
+  }
+
+  isZ(): boolean {
+    return BitUtils.getBit(this.registers.flags.z, Registers.Z_POS)
+  }
+
+  isC(): boolean {
+    return BitUtils.getBit(this.registers.flags.c, Registers.C_POS)
   }
 }

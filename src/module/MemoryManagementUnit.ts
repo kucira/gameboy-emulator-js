@@ -15,6 +15,9 @@ export default class MemoryManagementUnit {
 
   /** write value into address of Memory */
   writeByte(address: any, data: any): void {
+    if (address >= 0x00 && address <= 0xff) {
+      return console.log(`cant write to ROM address ${address}`)
+    }
     this.bytes[address] = data
   }
 

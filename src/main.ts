@@ -9,6 +9,11 @@ const testBoot = () => {
   const rom = new Rom(BIOS_GB, 0)
   const mmu = new MemoryManagementUnit(rom)
   const cpu = new CPU(mmu)
+  let counter = 1
+  // while (counter < mmu.bytes.length) {
+  //   cpu.runCommand()
+  //   counter++
+  // }
   const interval = setInterval(() => {
     cpu.runCommand()
   }, 1000)

@@ -27,7 +27,7 @@ export default class CPU {
     /** interrupts flag address 0xff0f */
     const interruptFlag = this.mmu.readByte(0xff0f)
 
-    /** interrupts enable address 0xff0f */
+    /** interrupts enable address 0xffff */
     const interruptEnable = this.mmu.readByte(0xffff)
 
     /** handle handling of cpu interrupts */
@@ -64,32 +64,45 @@ export default class CPU {
    * next instruction to be executed in theGame Boy memory
    */
   nextInstruction() {
+    // Fetch Opcode
+    // Decode Opcode
+    // Execute Opcode
     //get pc instruction
+    let cmd = null
     let pc = this.registers.getPC()
 
     // next instruction in PC
     // read the byte
     // get the opcode
     let opcode = this.mmu.readByte(pc++)
-    let cmd = null
 
     if (opcode === 0xcb) {
       opcode = this.mmu.readByte(pc++)
-      console.log('get command ext', this.opcodes.get(opcode), opcode)
-      //cmd = Opcodes.EXT_COMMANDS.get(opcode);
+      cmd = this.opcodes.getExt(opcode)
+      console.log('get command ext', this.opcodes.getExt(opcode), opcode, pc)
     } else {
       cmd = this.opcodes.get(opcode)
-      console.log('get command', cmd, opcode)
+      console.log('get command', cmd, opcode, pc)
     }
 
     if (!cmd) {
-      console.warn(`Invalid instruction ${opcode} @ ${pc}`)
+      if (opcode) {
+        console.warn(
+          `cmd ${cmd},  Invalid instruction opcode : ${opcode.toString(
+            16,
+          )} @pc : ${pc}`,
+        )
+      }
       return 0
     }
 
+    /** this the args from cpu instruction ex : LDBn : n is the args */
     const args = new Array(cmd.args)
     for (let i = 0; i < args.length; i++) {
       args[i] = this.mmu.readByte(pc++)
+      console.log(
+        `Memory[${pc}] in args : ${this.mmu.readByte(pc).toString(16)}`,
+      )
     }
     console.log(args, 'args')
 
@@ -97,9 +110,9 @@ export default class CPU {
     cmd.commandOperation(this.registers, this.mmu, args)
 
     console.log(
-      `opcode ${opcode} PC : ${pc} Register: ${JSON.stringify(
+      `opcode : ${opcode.toString(16)}, PC : ${pc} Register: ${JSON.stringify(
         this.registers.getRegister(),
-      )}`,
+      )} Memory[${pc}] : ${this.mmu.readByte(pc).toString(16)}`,
     )
 
     return cmd.cycles
