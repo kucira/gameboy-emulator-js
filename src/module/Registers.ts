@@ -138,11 +138,55 @@ export default class Registers {
     this.registers = REGISTERS
   }
 
+  setZFlag(z: any) {
+    this.registers.flags.z = BitUtils.setBit(
+      this.registers.flags.z,
+      Registers.Z_POS,
+      z,
+    )
+  }
+
+  setCFlag(c: any) {
+    this.registers.flags.c = BitUtils.setBit(
+      this.registers.flags.z,
+      Registers.C_POS,
+      c,
+    )
+  }
+
+  setHFlag(h: any) {
+    this.registers.flags.h = BitUtils.setBit(
+      this.registers.flags.h,
+      Registers.H_POS,
+      h,
+    )
+  }
+
+  setNFlag(n: any) {
+    this.registers.flags.n = BitUtils.setBit(
+      this.registers.flags.n,
+      Registers.N_POS,
+      n,
+    )
+  }
+
   isZ(): boolean {
     return BitUtils.getBit(this.registers.flags.z, Registers.Z_POS)
   }
 
   isC(): boolean {
     return BitUtils.getBit(this.registers.flags.c, Registers.C_POS)
+  }
+
+  isH(): boolean {
+    return BitUtils.getBit(this.registers.flags.h, Registers.H_POS)
+  }
+
+  isN(): boolean {
+    return BitUtils.getBit(this.registers.flags.n, Registers.N_POS)
+  }
+
+  toString(): String {
+    return JSON.stringify(this.registers)
   }
 }

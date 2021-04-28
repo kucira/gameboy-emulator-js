@@ -79,10 +79,10 @@ export default class CPU {
     if (opcode === 0xcb) {
       opcode = this.mmu.readByte(pc++)
       cmd = this.opcodes.getExt(opcode)
-      console.log('get command ext', this.opcodes.getExt(opcode), opcode, pc)
+      // console.log('get command ext', this.opcodes.getExt(opcode), opcode, pc)
     } else {
       cmd = this.opcodes.get(opcode)
-      console.log('get command', cmd, opcode, pc)
+      // console.log('get command', cmd, opcode, pc)
     }
 
     if (!cmd) {
@@ -101,19 +101,14 @@ export default class CPU {
     for (let i = 0; i < args.length; i++) {
       args[i] = this.mmu.readByte(pc++)
       console.log(
-        `Memory[${pc}] in args : ${this.mmu.readByte(pc).toString(16)}`,
+        `args of n[${pc}] in args : ${this.mmu.readByte(pc).toString(16)}`,
       )
     }
-    console.log(args, 'args')
 
     this.registers.setPC(pc)
     cmd.commandOperation(this.registers, this.mmu, args)
-
-    console.log(
-      `opcode : ${opcode.toString(16)}, PC : ${pc} Register: ${JSON.stringify(
-        this.registers.getRegister(),
-      )} Memory[${pc}] : ${this.mmu.readByte(pc).toString(16)}`,
-    )
+    console.log(`cmd : ${cmd.label} -- args of n : ${args}`)
+    console.log(`Registers ${this.registers.toString()}`)
 
     return cmd.cycles
   }
@@ -125,7 +120,7 @@ export default class CPU {
   /** run command of CPU */
   runCommand(): Number {
     const handleInterrupt = this.handleInterrupt()
-    console.log(handleInterrupt)
+    console.log(handleInterrupt, 'inter')
     this.nextInstruction()
 
     return 0

@@ -49,17 +49,19 @@ export default class BitUtils {
     return (msb << 8) | lsb
   }
 
-  static getBit(byteValue: any, position: any): boolean {
-    return (byteValue & (1 << position)) != 0
+  static getBit(byteValue: any, position: any): any {
+    return (byteValue & (1 << position)) !== 0
   }
 
   // public static int setBit(int byteValue, int position, boolean value) {
   //     return value ? setBit(byteValue, position) : clearBit(byteValue, position);
   // }
 
-  static setBit(byteValue: any, position: any) {
+  static setBit(byteValue: any, position: any, value?: any) {
     // checkByteArgument("byteValue", byteValue);
-    return (byteValue | (1 << position)) & 0xff
+    return value
+      ? (byteValue | (1 << position)) & 0xff
+      : BitUtils.clearBit(byteValue, position)
   }
 
   static clearBit(byteValue: any, position: any) {
@@ -69,7 +71,7 @@ export default class BitUtils {
 
   static isNegative(signedByteValue: any): boolean {
     // checkByteArgument("byteValue", signedByteValue);
-    return (signedByteValue & (1 << 7)) != 0
+    return (signedByteValue & (1 << 7)) !== 0
   }
 
   static abs(signedByteValue: any) {
