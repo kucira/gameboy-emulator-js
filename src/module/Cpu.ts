@@ -88,7 +88,7 @@ export default class CPU {
     if (!cmd) {
       if (opcode) {
         console.warn(
-          `cmd ${cmd},  Invalid instruction opcode : ${opcode.toString(
+          `cmd ${cmd},  Invalid instruction opcode : 0x${opcode.toString(
             16,
           )} @pc : ${pc}`,
         )
@@ -118,7 +118,7 @@ export default class CPU {
   }
 
   /** run command of CPU */
-  runCommand(): Number {
+  tick(): Number {
     const handleInterrupt = this.handleInterrupt()
     console.log(handleInterrupt, 'inter')
     this.nextInstruction()

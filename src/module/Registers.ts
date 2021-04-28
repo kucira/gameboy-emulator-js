@@ -57,8 +57,20 @@ export default class Registers {
     return this.registers.l
   }
 
+  getAF(): any {
+    return (this.registers.a << 8) | this.registers.f
+  }
+
   getHL(): any {
     return (this.registers.h << 8) | this.registers.l
+  }
+
+  getBC(): any {
+    return (this.registers.b << 8) | this.registers.c
+  }
+
+  getDE(): any {
+    return (this.registers.d << 8) | this.registers.e
   }
 
   getSP(): any {
@@ -126,6 +138,14 @@ export default class Registers {
     const oldHL = this.getHL()
     this.setHL((oldHL - 1) % 0xffff)
     return oldHL
+  }
+
+  decrementSP(): void {
+    this.registers.sp = (this.registers.sp - 1) % 0xffff
+  }
+
+  incrementSP() {
+    this.registers.sp = (this.registers.sp + 1) % 0xffff
   }
 
   incrementHL(): void {

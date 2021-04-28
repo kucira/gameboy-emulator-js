@@ -1,3 +1,8 @@
+export const SCREEN = {
+  width: 166,
+  height: 140,
+}
+
 /** Memory Size of Gameboy Max 64kb */
 export const MEMORY = new Uint16Array(65536)
 
