@@ -121,8 +121,7 @@ export default class CPU {
   tick(): Number {
     const handleInterrupt = this.handleInterrupt()
     console.log(handleInterrupt, 'inter')
-    this.nextInstruction()
 
-    return 0
+    return this.nextInstruction()
   }
 }

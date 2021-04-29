@@ -12,13 +12,16 @@ const testBoot = () => {
   const cpu = new CPU(mmu)
   const gpu = new GPU(cpu, mmu)
 
-  while (cpu.registers.getPC() !== 0x100) {
-    cpu.tick()
-  }
-  // const interval = setInterval(() => {
-  //   cpu.runCommand()
-  // }, 1000)
+  // while (cpu.registers.getPC() !== 0x100) {
+  //   cpu.tick()
+  // }
+  setInterval(() => {
+    let cpuTick = 0
+    if (cpuTick == 0) {
+      cpu.tick()
+    }
+    cpuTick = (cpuTick + 1) % 4
+    gpu.tick()
+  }, 1000)
 }
-
-console.log('test boot ------ run')
 testBoot()

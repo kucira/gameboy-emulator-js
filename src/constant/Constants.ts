@@ -321,3 +321,10 @@ export const CPU_INTERRUPTS = {
   SERIAL_TRANSFER: 0x0058,
   HILO: 0x0060,
 }
+
+export const GPU_MODE_FLAG = {
+  HBLANK: 0,
+  VBLANK: 1,
+  OAM: 2,
+  LCDC: 3,
+}

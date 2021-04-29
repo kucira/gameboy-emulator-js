@@ -5,12 +5,10 @@
 /** https://multigesture.net/articles/how-to-write-an-emulator-Chip-8-interpreter/ */
 export default class BitUtils {
   /**  bitwise operation to get the MSB(Most Significant Bit)
-   * MSB get the left or the first position of binary
-   * ex: 0001 -> MSB = 0
    *
    * bitwise shift right is divided by 2
    * binary = 0000001111101000 (1000 in decimal), binary >> 2
-   * copy the MSB = 0 twice( x >> 2) if(x >> 3) then it will copy 3 times
+   * add 0 twice( x >> 2) if(x >> 3) then it will copy 3 times
    * binary = 00 + 0000001111101000 -> 0000 0000 1111 1010 -> 250
    * and the value will be 1000 / 2 = 500 / 2 = 250
    *
@@ -72,6 +70,14 @@ export default class BitUtils {
   static isNegative(signedByteValue: any): boolean {
     // checkByteArgument("byteValue", signedByteValue);
     return (signedByteValue & (1 << 7)) !== 0
+  }
+
+  static addSignedByte(word: any, signedByteValue: any) {
+    if (BitUtils.isNegative(signedByteValue)) {
+      return word - BitUtils.abs(signedByteValue)
+    } else {
+      return word + BitUtils.abs(signedByteValue)
+    }
   }
 
   static abs(signedByteValue: any) {

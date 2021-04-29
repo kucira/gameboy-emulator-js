@@ -15,6 +15,7 @@ export default class MemoryManagementUnit {
 
   /** write value into address of Memory */
   writeByte(address: any, data: any): void {
+    console.log(`write to memory 0x${address.toString(16)} or ${address}`)
     if (address >= 0x00 && address <= 0xff) {
       return console.log(`cant write to ROM address ${address}`)
     }
@@ -25,6 +26,7 @@ export default class MemoryManagementUnit {
   private getSpace(address: any): any {
     // start from 0-255 or 0x00 - 0xff this is 8bit
     // 0-255 is the boot room
+    console.log(`read byte from memory 0x${address.toString(16)} or ${address}`)
     if (address >= 0x00 && address <= 0xff) {
       return this.rom.getByte(address)
     }
